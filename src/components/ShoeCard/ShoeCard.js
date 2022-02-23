@@ -23,19 +23,48 @@ const ShoeCard = ({ slug, name, imageSrc, price, salePrice, releaseDate, numOfCo
       ? 'new-release'
       : 'default'
 
+  const ACTIONS = {
+    'on-sale': {
+      flagStyle: {
+        '--background-color': COLORS.primary,
+      },
+      text: 'Sale',
+      priceStyle: {
+        '--text-decoration': 'line-through',
+        '--color': COLORS.gray[700],
+      },
+    },
+    'new-release': {
+      flagStyle: {
+        '--background-color': COLORS.secondary,
+      },
+      text: 'Just Released!',
+      priceStyle: {},
+    },
+    default: {
+      flagStyle: {},
+      text: '',
+      priceStyle: {},
+    },
+  };
+
+  const action = ACTIONS[variant];
+
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
+          {!!action && <Flag style={action.flagStyle}>{action.text}</Flag>}
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          <Price style={action.priceStyle}>{formatPrice(price)}</Price>
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          {!!salePrice && <SalePrice>{formatPrice(salePrice)}</SalePrice>}
         </Row>
       </Wrapper>
     </Link>
@@ -47,10 +76,25 @@ const Link = styled.a`
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  position: relative;
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
+`;
+
+const Flag = styled.div`
+  position: absolute;
+  top: 12px;
+  right: -4px;
+  width: auto;
+  padding: 8px 10px;
+  border-radius: 2px;
+  font-weight: 700;
+  font-size: ${14 / 18} rem;
+  color: white;
+  background-color: var(--background-color);
 `;
 
 const Image = styled.img`
@@ -59,6 +103,8 @@ const Image = styled.img`
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
@@ -66,7 +112,10 @@ const Name = styled.h3`
   color: ${COLORS.gray[900]};
 `;
 
-const Price = styled.span``;
+const Price = styled.span`
+  color: var(--color);
+  text-decoration: var(--text-decoration);
+`;
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};
