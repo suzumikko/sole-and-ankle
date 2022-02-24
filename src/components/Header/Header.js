@@ -42,7 +42,7 @@ const Side = styled.div`
 `;
 
 const Nav = styled.nav`
-  margin: 0 48px;
+  margin: 0 48px; /* minimal space left and right around the nav */
   display: flex;
   gap: 48px;
 `;

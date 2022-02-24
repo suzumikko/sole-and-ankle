@@ -56,15 +56,19 @@ const ShoeCard = ({ slug, name, imageSrc, price, salePrice, releaseDate, numOfCo
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
           {!!action && <Flag style={action.flagStyle}>{action.text}</Flag>}
+          {/* alternative: separate SaleFlag and NewFlag styled components:
+          {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>} + repeat for new */}
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
           <Price style={action.priceStyle}>{formatPrice(price)}</Price>
+          {/* alternative: style={{'--color': variant === 'on-sale' ?  COLORS.gray[700] : undefined, '--text-decoration': ....}} */}
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
           {!!salePrice && <SalePrice>{formatPrice(salePrice)}</SalePrice>}
+          {/* alternative: {variant === 'on-sale' ? <SalePrice>{formatPrice(salePrice)}</SalePrice>} : undefined} */}
         </Row>
       </Wrapper>
     </Link>
@@ -95,6 +99,13 @@ const Flag = styled.div`
   font-size: ${14 / 18} rem;
   color: white;
   background-color: var(--background-color);
+
+  /*
+  alternative: set fix height, align per same line-height:
+    height: 32px;
+    line-height: 32px;
+    padding: 0 10px;
+  */
 `;
 
 const Image = styled.img`
